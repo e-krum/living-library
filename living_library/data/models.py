@@ -36,4 +36,3 @@ class Book(Base):
     genre: Mapped[int] = mapped_column(nullable=False)
     state: Mapped[int] = mapped_column(default=0)
     uri: Mapped[str] = mapped_column(nullable=False)
-
