@@ -13,7 +13,7 @@ def create_app(test_config=None):
     )
 
     # sqlalchemy configuration
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.path.join(app.instance_path, 'living-library.sqlite')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///living-library.sqlite'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     if test_config is None:
@@ -22,6 +22,8 @@ def create_app(test_config=None):
     else:
         # Load the test config if passed in
         app.config.from_mapping(test_config)
+
+    database.db.init_app(app)
     
     # ensure instance folder exists
     try:
@@ -35,13 +37,13 @@ def create_app(test_config=None):
         return 'Hello, World!'
 
     # initializing connection to db
-    from . import auth, blog
-    database.init_db()
+    from . import auth, book
+    database.init_db(app)
 
     # registering blueprint endpoints
     app.register_blueprint(auth.bp)
 
-    app.register_blueprint(blog.bp)
+    app.register_blueprint(book.bp)
     app.add_url_rule('/', endpoint='index')
 
     @app.teardown_appcontext
