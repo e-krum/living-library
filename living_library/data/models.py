@@ -37,6 +37,3 @@ class Book(Base):
     state: Mapped[int] = mapped_column(default=0)
     uri: Mapped[str] = mapped_column(nullable=False)
 
-    def get_genre(self, id):
-        return Genre(id).value
-

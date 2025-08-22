@@ -1,6 +1,6 @@
 from enum import Enum
 
 class BookState(Enum):
-    UNREAD = 0
+    TO_BE_READ = 0
     READING = 1
-    READ = 2
+    FINISHED = 2

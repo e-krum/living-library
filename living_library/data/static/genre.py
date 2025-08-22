@@ -15,6 +15,6 @@ class Genre(Enum):
     THRILLER = (11, 'Thriller')
     WESTERN = (12, 'Western')
 
-    def __init__(self, id, value):
+    def __init__(self, id, title):
         self.id = id
-        self.value = value
+        self.title = title
