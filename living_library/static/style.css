@@ -25,7 +25,7 @@ hr {
   border-top: 1px solid lightgray;
 }
 
-nav {
+/* nav {
   background: lightgray;
   display: flex;
   align-items: center;
@@ -44,17 +44,18 @@ nav h1 a {
 
 nav ul  {
   display: flex;
+  float: right;
   list-style: none;
   margin: 0;
   padding: 0;
-}
+} */
 
 nav ul li a, nav ul li span, header .action {
   display: block;
   padding: 0.5rem;
 }
 
-.content {
+/* .content {
   padding: 0 1rem 1rem;
 }
 
@@ -131,4 +132,65 @@ input.danger {
 input[type=submit] {
   align-self: start;
   min-width: 10em;
+}
+
+.navigation {
+  float: right;
+} */ 
+
+/* .nav-item  { 
+  float: right;
+}
+
+.nav-button {
+  display: block;
+  padding: 8px;
+  border: groove;
+  /* outline-width: 10; */
+  /* border-color: #377ba8; */
+/* } */
+
+/* .navigation li .user {
+  float: right
+} */
+
+.navigation {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #888;
+  /* display: flex; */
+}
+
+li {
+  float: left;
+  display: flex;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+
+div.pagination-div {
+  text-align: center;
+  list-style-type: none;
+  overflow: hidden;
+}
+
+ul.pagination {
+  display: inline-block;
+  text-align: center;
 }
