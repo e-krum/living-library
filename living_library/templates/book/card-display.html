@@ -1,0 +1,26 @@
+{% if book %}
+    <ul class="book-card-display">
+        {% if book[0].image_url %}
+            <div class="card-image">
+                <img src="{{book[0].image_url}}">
+            </div>
+            <div class="card-details">
+                <li class="book-card-title">{{book[0].title}}</li>
+                <li class="book-card-author">by {{book[0].author}}</li>
+                <li class="book-card-genre">{{book[0].genre}}</li>
+                <li class="book-card-user">added by {{book[1]}}</li>
+            </div>
+        {% else %}
+            <li class="book-card-title">{{book[0].title}}</li>
+            <li class="book-card-author">by {{book[0].author}}</li>
+            <li class="book-card-genre">{{book[0].genre}}</li>
+            <li class="book-card-user">added by {{book[1]}}</li>
+        {% endif %}
+        <br>
+        <form id="confirm-selection" method="post" action="{{ url_for('book.randomize') }}">
+            <label for="id" style="display: none;"></label>
+            <input name="id" id="id" style="display: none;" value="{{book[0].id}}">
+            <input type="submit" value="Confirm Selection?">
+        </form>
+    </ul>
+{% endif %}
