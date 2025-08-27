@@ -222,31 +222,7 @@ ul.pagination {
   min-width: 80%;
   max-width: 100%;
 
-  & .book-card-title {
-    font-size: x-large;
-    justify-content: center;
-    display: flex;
-  }
-
-  & .book-card-author {
-    font-size: larger;
-    justify-content: center;
-    display: flex;
-  }
-
-  & .book-card-genre {
-    font-size: large;
-    justify-content: center;
-    display: flex;
-  }
-
-  & .book-card-user {
-    font-size: large;
-    justify-content: center;
-    display: flex;
-  }
-
-  & #confirm-selection {
+  & .book-card-author, .book-card-genre, .book-card-title, .book-card-user, #confirm-selection {
     font-size: large;
     justify-content: center;
     display: flex;
@@ -261,7 +237,7 @@ ul.pagination {
     }
   }
 
-  & .card-image:hover + .card-details {
+  & .card-image:hover + .card-details, .card-details:hover {
     display: block;
   }
 
