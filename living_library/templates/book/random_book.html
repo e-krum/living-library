@@ -1,0 +1,14 @@
+<script src="{{ url_for('static', filename='random_book.js')}}"></script>
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Fresh off the Shelf{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form id="random-book-form" method="post">
+        <button type="submit">Pull one from the shelf!</button>
+    </form>
+    <br>
+    <div id="card" class="card-content"></div>
+{% endblock %}

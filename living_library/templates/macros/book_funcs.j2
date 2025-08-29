@@ -1,0 +1,22 @@
+{% macro card_display(book, user, is_index=False) %}
+    {% if book.image_url %}
+        <div class="card-image">
+            <img src="{{book.image_url}}">
+        </div>
+        <div class="card-details">
+            {{ card_details(book, user, is_index) }}
+        </div>
+    {% else %}
+        {{ card_details(book, user, is_index) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro card_details(book, user, is_index) %}
+    <li class="book-card-title">{{book.title}}</li>
+    <li class="book-card-author">by {{book.author}}</li>
+    <li class="book-card-genre">{{book.genre}}</li>
+    <li class="book-card-user">added by {{user}} {% if is_index %} on {{ book.created.strftime('%Y-%m-%d') }} {% endif %}</li>
+    {% if is_index %}
+        <li class="book-edit"><a class="action" href="{{ url_for('book.update', uri=book.uri) }}">Edit</a></li>
+    {% endif %}
+{% endmacro %}

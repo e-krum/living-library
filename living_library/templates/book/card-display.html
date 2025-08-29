@@ -1,0 +1,13 @@
+{% import 'macros/book_funcs.j2' as bkfn %}
+
+{% if book %}
+    <ul class="book-card-display">
+        {{bkfn.card_display(book[0], book[1])}}
+        <br>
+        <form id="confirm-selection" method="post" action="{{ url_for('book.randomize') }}">
+            <label for="id" style="display: none;"></label>
+            <input name="id" id="id" style="display: none;" value="{{book[0].id}}">
+            <input type="submit" value="Confirm Selection?">
+        </form>
+    </ul>
+{% endif %}
