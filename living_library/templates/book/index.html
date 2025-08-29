@@ -1,3 +1,5 @@
+<script src="{{ url_for('static', filename='index.js')}}"></script>
+{% import 'macros/book_funcs.j2' as bkfn %}
 {% extends 'base.html' %}
 
 {% block header %}
@@ -13,24 +15,20 @@
 
 {% block content %}
     <div class="container">
-        {% for book in books %}
-        <article class="book">
-        <header>
-            <div>
-            <h1>{{ book[0].title }}</h1>
-            <p class="body">by {{ book[0].author }} | Genre - {{book[0].genre}}</p>
-            <div class="about">Added by {{ book.username }} on {{ book[0].created.strftime('%Y-%m-%d') }}</div>
+        {% for row in rows %}
+            <div class="row">
+                {% for book in row %}
+                    <div class="card-content">
+                        <article class="book-card-display">
+                            {{bkfn.card_display(book[0], book[1], True)}}
+                        </article>
+                    </div>
+                {% endfor %}
             </div>
-            {% if g.user.id == book[0].user_id %}
-            <a class="action" href="{{ url_for('book.update', uri=book[0].uri) }}">Edit</a>
+            {% if not loop.last %}
+                <hr>
             {% endif %}
-        </header>
-        
-        </article>
-        {% if not loop.last %}
-        <hr>
-        {% endif %}
-    {% endfor %}
+        {% endfor %}
         <nav aria-label="Page navigation example">
             <div class="pagination-div">
                 <ul class="pagination">
@@ -39,7 +37,7 @@
                             <a class="page-link" href="{{ url_for('index', page=pagination.prev_num) }}">Previous</a>
                         </li>
                     {% else %}
-                        <li class="disabled" style="float:left"><span class="page-link">Previous</span></li>
+                        <li class="page-item disabled" style="float:left"><span class="page-link">Previous</span></li>
                     {% endif %}
 
                     {% for page_num in pagination.iter_pages() %}

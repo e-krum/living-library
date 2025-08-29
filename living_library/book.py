@@ -15,6 +15,7 @@ from living_library.data.static.book_state import BookState
 from living_library.utility.utils import build_uri, convert_book, convert_genre
 
 PER_PAGE = 10
+PER_ROW = 4
 
 bp = Blueprint('book', __name__)
 
@@ -27,8 +28,10 @@ def index():
     users = (User.query.with_entities(User.username).all())
     
     for book in books.items: convert_book(book[0])
+
+    books.items = build_row(books.items)
     
-    return render_template('book/index.html', books=books.items, pagination=books, users=users, genres=list(Genre))
+    return render_template('book/index.html', rows=books.items, pagination=books, users=users, genres=list(Genre))
 
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
@@ -127,6 +130,17 @@ def card_display():
     
     return render_template('book/card-display.html', book=selected_book)
 
+def build_row(books):
+    new_list = []
+    temp = []
+    for index, book in enumerate(books):
+        if index > 0 and index % PER_ROW == 0:
+            new_list.append(temp.copy())
+            temp.clear()
+        temp.append(book)
+
+    if len(temp) > 0: new_list.append(temp.copy())
+    return new_list
 
 def build_query(args, filter=False, additions=False):
     query = (Book.query.join(User, User.id == Book.user_id)
@@ -148,15 +162,6 @@ def build_filter(query, args):
     criteria = build_criteria(user=(User.username, user),genre=(Book.genre, genre),state=(Book.state, state))
     
     return query.filter(*criteria)
-
-    # if user and genre is not None:
-    #     return query.filter(User.username == user & Book.genre == genre)
-    # elif user is not None:
-    #     return query.filter(User.username == user)
-    # elif genre is not None:
-    #     return query.filter(Book.genre == genre)
-    # else: 
-    #     return query
     
 def build_criteria(**kwargs):
     criteria = []
