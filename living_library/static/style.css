@@ -5,6 +5,7 @@ html {
 }
 
 body {
+  min-width: 500px;
   max-width: 960px;
   margin: 0 auto;
   background: white;
@@ -13,7 +14,10 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: serif;
   color: #377ba8;
-  margin: 1rem 0;
+  margin: 0;
+  padding-left: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 a {
@@ -160,25 +164,27 @@ input[type=submit] {
   padding: 0;
   overflow: hidden;
   background-color: #888;
-  /* display: flex; */
+  border-radius: 5px;
+
+  & li {
+    float: left;
+    display: flex;
+  }
+
+  & li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  & li a:hover:not(.active) {
+    background-color: #111;
+  }
 }
 
-.navigation > li {
-  float: left;
-  display: flex;
-}
-
-.navigation > li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-.navigation > li a:hover:not(.active) {
-  background-color: #111;
-}
+.navigation > 
 
 .active {
   background-color: #04AA6D;
@@ -191,7 +197,7 @@ div.pagination-div {
 }
 
 ul.pagination {
-  display: inline-block;
+  justify-content: center;
   text-align: center;
 }
 
@@ -201,7 +207,7 @@ ul.pagination {
   display: flex;
 }
 
-.card-test {
+.card-content {
   width: 30%;
   margin: auto;
   justify-content: center;

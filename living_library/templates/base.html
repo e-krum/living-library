@@ -9,21 +9,22 @@
 
 <title>{% block title %}{% endblock %} - Living Library</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
-<h1>Living Library</h1>
-<nav>
-    <ul class="navigation">
-        <li><a href="{{ url_for('index') }}">Home</a></li>
-        <li><a href="{{ url_for('book.random') }}">Randomize</a></li>
-        <li><a href=""></a></li>
-        {% if g.user %}
-            <li style="float:right"><a class="nav-button" href="{{ url_for('auth.logout') }}">Log Out</a></li>
-            <li style="float:right"><span>{{ g.user['username'] }}</span></li>
-        {% else %}
-            <li style="float:right"><a class="nav-button" href="{{ url_for('auth.register') }}">Register</a></li>
-            <li style="float:right"><a class="nav-button" href="{{ url_for('auth.login') }}">Log In</a></li>
-        {% endif %}
-    </ul>
-</nav>
+<div class="container">
+    <h1>Living Library</h1>
+    <nav>
+        <ul class="navigation">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('book.randomize') }}">Randomize</a></li>
+            {% if g.user %}
+                <li style="float:right"><a class="nav-button" href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                <li style="float:right"><span>{{ g.user['username'] }}</span></li>
+            {% else %}
+                <li style="float:right"><a class="nav-button" href="{{ url_for('auth.register') }}">Register</a></li>
+                <li style="float:right"><a class="nav-button" href="{{ url_for('auth.login') }}">Log In</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
 <section class="content container">
     <header>
         {% block header %}{% endblock %}
