@@ -161,6 +161,7 @@ input[type=submit] {
 .navigation {
   list-style-type: none;
   margin: 0;
+  margin-bottom: 2em;
   padding: 0;
   overflow: hidden;
   background-color: #888;
@@ -184,8 +185,6 @@ input[type=submit] {
   }
 }
 
-.navigation > 
-
 .active {
   background-color: #04AA6D;
 }
@@ -194,6 +193,7 @@ div.pagination-div {
   text-align: center;
   list-style-type: none;
   overflow: hidden;
+  margin-top: 2em;
 }
 
 ul.pagination {
@@ -208,7 +208,7 @@ ul.pagination {
 }
 
 .card-content {
-  width: 30%;
+  width: 25%;
   margin: auto;
   justify-content: center;
   display: flex;
@@ -222,16 +222,16 @@ ul.pagination {
   font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
   display: inline-block;
   border-style: groove;
-  border-color: #377ba8;
   border-radius: 5px;
   background-color: #ccc;
   min-width: 80%;
-  max-width: 100%;
+  max-width: 80%;
+  position: relative;
 
-  & .book-card-author, .book-card-genre, .book-card-title, .book-card-user, #confirm-selection {
-    font-size: large;
+  & .book-card-author, .book-card-genre, .book-card-title, .book-card-user, .book-edit, #confirm-selection {
     justify-content: center;
     display: flex;
+    text-align: center;
   }
 
   & .card-image {
@@ -257,6 +257,99 @@ ul.pagination {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    min-width: 80%;
   }
 }
+
+@media (min-width: 576px) {
+  .shelves{
+    max-width: 540px;
+    & .book-card-title {
+      font-size: 16;
+      font-style: oblique;
+    }
+
+    & .book-card-author {
+      font-size: 14;
+    }
+
+    & .book-card-genre {
+      font-size: 12;
+    }
+
+    & .book-card-user {
+      font-size: 10;
+    }
+  }
+}
+
+@media (min-width: 768px)  {
+  .shelves{
+    max-width: 720px;
+    & .book-card-title {
+      font-size: 18;
+      font-style: oblique;
+    }
+
+    & .book-card-author {
+      font-size: 16;
+    }
+
+    & .book-card-genre {
+      font-size: 14;
+    }
+
+    & .book-card-user {
+      font-size: 12;
+    }
+  }
+}
+
+@media (min-width: 992px)  {
+  .shelves{
+    max-width: 960px;
+    & .book-card-title {
+      font-size: 20;
+      font-style: oblique;
+    }
+
+    & .book-card-author {
+      font-size: 18;
+    }
+
+    & .book-card-genre {
+      font-size: 16;
+    }
+
+    & .book-card-user {
+      font-size: 14;
+    }
+  }
+}
+
+@media (min-width: 1200px)  {
+  .shelves{
+    max-width: 1140px;
+    & .book-card-title {
+      font-size: 24;
+      font-style: oblique;
+    }
+
+    & .book-card-author {
+      font-size: 20;
+    }
+
+    & .book-card-genre {
+      font-size: 18;
+    }
+
+    & .book-card-user {
+      font-size: 16;
+    }
+  }
+}
+
+
+
+
 
