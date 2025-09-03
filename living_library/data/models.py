@@ -36,3 +36,14 @@ class Book(Base):
     genre: Mapped[int] = mapped_column(nullable=False)
     state: Mapped[int] = mapped_column(default=0)
     uri: Mapped[str] = mapped_column(nullable=False)
+
+class Review(Base):
+    __tablename__ = 'review'
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+    book_id: Mapped[int] = mapped_column(ForeignKey('book.id'))
+    created: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.now())
+    title: Mapped[str] = mapped_column(nullable=False)
+    body: Mapped[str] = mapped_column(nullable=False)
+    rating: Mapped[float] = mapped_column()
