@@ -1,0 +1,50 @@
+<script src="{{ url_for('static', filename='book.js')}}"></script>
+{% extends 'base.html' %}
+{% block title %}{{book.title}}{% endblock %}
+
+{% block content %}
+    <div id="book-details">
+        <img class="book-image" src="{{book.image_url}}">
+        <div class="book-info">
+            <span class="book-info-title">{{book.title}}</span>
+            <span class="book-info-author">by {{book.author}}</span>
+            <span class="book-info-genre">Genre: {{book.genre}}</span>
+            <span class="book-info-user">added by {{user}} on {{book.created.strftime('%Y-%m-%d')}}</span>
+            <span class="book-info-status">Current state: {{book.state}}</span>
+        </div>
+    </div>
+    <hr>
+    <h1>Reviews</h1>
+    <div class="book-reviews">
+        <form id="book-review-form" method="post" action="{{url_for('book.submit_review')}}">
+            <label for="title">Title</label>
+            <input name="title" id="title" value="{{request.form['title']}}" required>
+            <label for="body">Body</label>
+            <textarea name="body" id="body" rows="5">{{request.form['body']}}</textarea>
+            <div class="book-review-rating">
+                <label for="one">1</label>
+                <input type="radio" id="one" name="rating" value="1">
+                <label for="two">2</label>
+                <input type="radio" id="two" name="rating" value="2">
+                <label for="three">3</label>
+                <input type="radio" id="three" name="rating" value="3">
+                <label for="four">4</label>
+                <input type="radio" id="four" name="rating" value="4">
+                <label for="five">5</label>
+                <input type="radio" id="five" name="rating" value="5">
+                <button id="review-submit" type="submit">Submit Review</button>
+            </div>
+            <input type="hidden" id="user_id" name="user_id" value="{{g.user['id']}}">
+            <input type="hidden" id="book_id" name="book_id" value="{{book.id}}">
+        </form>
+        {% for review in reviews %}
+
+        {% else %}
+            <span id="no-reviews">Not Reviewed</span>
+            {% if book.state != 'To be Read' %}
+                
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    {% endblock %}

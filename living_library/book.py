@@ -9,17 +9,17 @@ from werkzeug.exceptions import abort
 
 from living_library.auth import login_required
 from living_library.data.database import db_session
-from living_library.data.models import Book, User
+from living_library.data.models import Book, Review, User
 from living_library.data.static.genre import Genre
 from living_library.data.static.book_state import BookState
 from living_library.utility.utils import build_uri, convert_book, convert_genre
 
-PER_PAGE = 10
+PER_PAGE = 4
 PER_ROW = 4
 
 bp = Blueprint('book', __name__)
 
-@bp.route('/')
+@bp.route('/shelves')
 def index():
     
     page = request.args.get('page', 1, type=int)
@@ -56,17 +56,6 @@ def create():
     
     return render_template('book/create.html', genres=list(Genre))
 
-def get_book(idOrUri, check_author=True):
-    book = Book.query.filter((Book.id == idOrUri) | (Book.uri == idOrUri)).join(User, User.id == Book.user_id).first()
-
-    if book is None:
-        abort(404, f"Post id {idOrUri} doesn't exist")
-
-    if check_author and book.user_id != g.user.id:
-        abort(403)
-
-    return book
-
 @bp.route('/<uri>/update', methods=('GET', 'POST'))
 @login_required
 def update(uri):
@@ -95,6 +84,17 @@ def update(uri):
             return redirect(url_for('book.index'))
     
     return render_template('book/update.html', book=book, genres=list(Genre))
+
+@bp.route('/book/<uri>', methods=('GET',))
+def book_page(uri):
+    book = get_book(uri)
+    reviews = get_reviews(uri)
+    user = get_username(book.user_id)
+
+    print(book)
+    convert_book(book)
+
+    return render_template('book/book.html', book=book, reviews=reviews, user=user)
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
@@ -129,6 +129,31 @@ def card_display():
     selected_book[0].genre = convert_genre(selected_book[0].genre)
     
     return render_template('book/card-display.html', book=selected_book)
+
+@bp.route('/book-review', methods=('POST',))
+@login_required
+def submit_review():
+    pass
+
+def get_book(idOrUri, check_author=True):
+    book = Book.query.filter((Book.id == idOrUri) | (Book.uri == idOrUri)).join(User, User.id == Book.user_id).first()
+
+    if book is None:
+        abort(404, f"Post id {idOrUri} doesn't exist")
+
+    if check_author and book.user_id != g.user.id:
+        abort(403)
+
+    return book
+
+def get_reviews(idOrUri):
+    return (Review.query.filter(Review.id == idOrUri)
+            .join(User, User.id == Review.user_id)
+            .join(Book, Book.id == Review.book_id)
+            .all())
+
+def get_username(id):
+    return User.query.filter(User.id == id).first().username
 
 def build_row(books):
     new_list = []
