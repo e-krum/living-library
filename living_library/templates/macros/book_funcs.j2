@@ -12,11 +12,8 @@
 {% endmacro %}
 
 {% macro card_details(book, user, is_index) %}
-    <li class="book-card-title">{{book.title}}</li>
-    <li class="book-card-author">by {{book.author}}</li>
-    <li class="book-card-genre">{{book.genre}}</li>
-    <li class="book-card-user">added by {{user}} {% if is_index %} on {{ book.created.strftime('%Y-%m-%d') }} {% endif %}</li>
-    {% if is_index %}
-        <li class="book-edit"><a class="action" href="{{ url_for('book.update', uri=book.uri) }}">Edit</a></li>
-    {% endif %}
+    <span class="book-card-title">{{book.title}}</span>
+    <span class="book-card-author">by {{book.author}}</span>
+    <span class="book-card-genre">{{book.genre}}</span>
+    <span class="book-card-user">added by {{user}} {% if is_index %} on {{ book.created.strftime('%Y-%m-%d') }} {% endif %}</span>
 {% endmacro %}

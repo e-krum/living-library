@@ -14,12 +14,12 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="container shelves">
         {% for row in rows %}
             <div class="row">
                 {% for book in row %}
                     <div class="card-content">
-                        <article class="book-card-display">
+                        <article class="book-card-display" href="{{ url_for('book.book_page', uri=book[0].uri)}}">
                             {{bkfn.card_display(book[0], book[1], True)}}
                         </article>
                     </div>
