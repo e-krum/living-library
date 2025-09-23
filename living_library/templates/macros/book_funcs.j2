@@ -17,3 +17,97 @@
     <span class="book-card-genre">{{book.genre}}</span>
     <span class="book-card-user">added by {{user}} {% if is_index %} on {{ book.created.strftime('%Y-%m-%d') }} {% endif %}</span>
 {% endmacro %}
+
+{% macro book_reviews(book, reviews) %}
+    <form id="book-review-form" method="post" action="{{url_for('book.submit_review')}}">
+        <label for="title">Title</label>
+        <input name="title" id="title" required>
+        <label for="body">Body</label>
+        <textarea name="body" id="body" rows="5"></textarea>
+        <div class="book-review-rating">
+            <label for="one">1</label>
+            <input type="radio" id="one" name="rating" value="1" required>
+            <label for="two">2</label>
+            <input type="radio" id="two" name="rating" value="2">
+            <label for="three">3</label>
+            <input type="radio" id="three" name="rating" value="3">
+            <label for="four">4</label>
+            <input type="radio" id="four" name="rating" value="4">
+            <label for="five">5</label>
+            <input type="radio" id="five" name="rating" value="5">
+            <button id="review-submit" type="submit">Submit Review</button>
+        </div>
+        <input type="hidden" id="user_id" name="user_id" value="{{g.user['id']}}">
+        <input type="hidden" id="book_id" name="book_id" value="{{book.id}}">
+    </form>
+    {% for review in reviews %}
+        <div class="review">
+            <span class="review-title">{{review[0].title}}</span>
+            <body class="review-body">{{review[0].body}}</body>
+            <span class="review-rating">{{review[0].rating}} / 5</span>
+            <span class="review-user">Reviewed by {{review[1]}} on {{book.created.strftime('%Y-%m-%d')}}</span>
+        </div>
+        <hr>
+    {% else %}
+        <span id="no-reviews">Not Reviewed</span>
+        {% if book.state != 'To be Read' %}
+            
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{% macro book_page(book, user, genres, state) %}
+    {{ book_details(book, user) }}
+    {{ book_update(book, genres, states) }}
+{% endmacro %}
+
+{% macro book_details(book, user) %}
+    <div id="book-details">
+        {% if book.image_url %}
+            <img class="book-image" src="{{book.image_url}}">
+        {% else %}
+            <img class="book-image" alt="Placeholder Book" src="{{ url_for('static', filename='book-cover-placeholder.png')}}">
+        {% endif %}
+        <div class="book-info">
+            <span class="book-info-title">{{book.title}}</span>
+            <span class="book-info-author">by {{book.author}}</span>
+            <span class="book-info-genre">Genre: {{book.genre}}</span>
+            <span class="book-info-user">added by {{user}} on {{book.created.strftime('%Y-%m-%d')}}</span>
+            <span class="book-info-status">Current state: {{book.state}}</span>
+            {% if book['user_id'] == g.user['id'] %}
+                <button type="button" id="edit-book">Edit Details</button>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro book_update(book, genres, states) %}
+    <div id="edit-book-form">
+        <form method="post">
+            <div class="edit-form">
+                <label for="title">Title</label>
+                <input name="title" id="title" value="{{request.form['title'] or book['title'] }}" required>
+                <label for="author">Author</label>
+                <input name="author" id="author" value="{{request.form['author'] or book['author'] }}" required>
+                <label for="genre">Genre</label>
+                <select name="genre" id="genre">
+                    {% for genre in genres %}
+                        {% if book.genre == genre.id %}
+                            <option value="{{genre['id']}}" selected>{{ genre['title'] }}</option>
+                        {% else %}
+                            <option value="{{genre['id']}}">{{ genre['title'] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <br>
+                <label for="image_url">Image Link</label>
+                <input name="image_url" id="image_url" value="{{request.form['image_url'] or book['image_url'] }}">
+                <input type="submit" value="Save">
+            </div>
+        </form>
+        <hr>
+        <form action="{{ url_for('book.delete', id=book['id']) }}" method="post">
+            <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+        </form>
+    </div>
+{% endmacro %}

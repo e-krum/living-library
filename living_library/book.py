@@ -2,7 +2,7 @@ from datetime import datetime
 import random
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, g, redirect, render_template, request, url_for, get_template_attribute
 )
 
 from werkzeug.exceptions import abort
@@ -87,14 +87,13 @@ def update(uri):
 
 @bp.route('/book/<uri>', methods=('GET',))
 def book_page(uri):
-    book = get_book(uri)
-    reviews = get_reviews(uri)
+    book = get_book(uri, False)
+    reviews = get_reviews(book.id)
     user = get_username(book.user_id)
 
-    print(book)
     convert_book(book)
 
-    return render_template('book/book.html', book=book, reviews=reviews, user=user)
+    return render_template('book/book.html', book=book, reviews=reviews, user=user, genres=list(Genre), states=list(BookState))
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
@@ -133,7 +132,25 @@ def card_display():
 @bp.route('/book-review', methods=('POST',))
 @login_required
 def submit_review():
-    pass
+    if request.method == 'POST':
+        title = request.form['title']
+        body = request.form['body']
+        rating = request.form['rating']
+        user_id = request.form['user_id']
+        book_id = request.form['book_id']
+        error = None
+
+        book = get_book(book_id)
+
+        review = Review(title=title, body=body, rating=rating, user_id=user_id, book_id=book_id, created=datetime.now())
+        db_session.add(review)
+        db_session.commit()
+
+        reviews = get_reviews(book_id)
+
+        template = get_template_attribute('macros/book_funcs.j2', 'book_reviews')
+
+        return template(book=book, reviews=reviews)
 
 def get_book(idOrUri, check_author=True):
     book = Book.query.filter((Book.id == idOrUri) | (Book.uri == idOrUri)).join(User, User.id == Book.user_id).first()
@@ -147,9 +164,11 @@ def get_book(idOrUri, check_author=True):
     return book
 
 def get_reviews(idOrUri):
-    return (Review.query.filter(Review.id == idOrUri)
+    return (Review.query.filter(Review.book_id == idOrUri)
             .join(User, User.id == Review.user_id)
             .join(Book, Book.id == Review.book_id)
+            .add_columns(User.username)
+            .order_by(Review.created.desc())
             .all())
 
 def get_username(id):

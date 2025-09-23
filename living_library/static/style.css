@@ -209,10 +209,27 @@ ul.pagination {
   }
 }
 
-.book-reviews {
+#edit-book-form {
+  display: none;
+  margin-left: 2em;
+  margin-right: 2em;
+  padding: .5em;
+  background-color: #eee;
+  border-radius: 1em 1em 1em 1em;
+
+  & .edit-form {
+    display: in
+  }
+}
+
+#book-reviews {
   margin-right: 2em;
   margin-left: 2em;
   display: grid;
+
+  & .review {
+    display: grid;
+  }
 }
 
 #book-review-form {
