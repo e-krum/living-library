@@ -19,9 +19,18 @@ PER_ROW = 4
 
 bp = Blueprint('book', __name__)
 
+
+def fix_uris():
+    books = Book.query.filter().all()
+
+    for book in books:
+        book.uri = build_uri(book.id, book.title)
+        db_session.add(book)
+
+    db_session.commit()
+
 @bp.route('/shelves')
 def index():
-    
     page = request.args.get('page', 1, type=int)
     query = build_query(request.args, filter=True, additions=True)
     books = query.paginate(page=page, per_page=PER_PAGE, error_out=False)
@@ -49,7 +58,8 @@ def create():
 
         if error is not None: flash(error)
         else:
-            book = Book(title=title, author=author, image_url=image_url, genre=genre, user_id=g.user.id, uri = build_uri(g.user.id, title), created=datetime.now())
+            book = Book(title=title, author=author, image_url=image_url, genre=genre, user_id=g.user.id, created=datetime.now())
+            book.uri = build_uri(book.id, title)
             db_session.add(book)
             db_session.commit()
             return redirect(url_for('book.index'))
@@ -78,7 +88,7 @@ def update(uri):
             book.author = author
             book.image_url = image_url
             book.genre = genre
-            book.uri = build_uri(book.user_id, book.title)
+            book.uri = build_uri(book.id, book.title)
             db_session.add(book)
             db_session.commit()
             return redirect(url_for('book.index'))
